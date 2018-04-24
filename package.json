@@ -1,0 +1,20 @@
+{
+  "name": "rh-cloud-formation",
+  "version": "0.1.0",
+  "description": "Infrastructure management for respectful-heart",
+  "main": "index.js",
+  "author": "Adam Fitzpatrick",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "deploy": "cloud-echelon"
+  },
+  "dependencies": {
+    "cloud-echelon": "https://github.com/adamfitzpatrick/cloud-echelon.git"
+  },
+  "echelon": {
+    "Environment": "prd",
+    "Templates": "./templates",
+    "CreateNewStack": true
+  }
+}

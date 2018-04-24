@@ -1,0 +1,99 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Parameters": {
+    "CognitoClientID": {
+      "Type": "String",
+      "Description": "Client ID for use with Cognito sign-ups"
+    }
+  },
+  "Metadata": {
+    "StackName": {
+      "Fn::Sub": "${Environment}RHStack"
+    }
+  },
+  "Resources": {
+    "RHLambdaCognitoSignUpRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": {
+          "Fn::Join": [ "", [{ "Ref": "Environment" }, "RHLambdaCognitoSignUpRole"] ]
+        },
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": [
+                "lambda.amazonaws.com"
+              ]
+            },
+            "Action": [
+              "sts:AssumeRole"
+            ]
+          }
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": {
+                "Action": "cognito-idp:SignUp",
+                "Effect": "Allow",
+                "Resource": "*"
+              }
+            },
+            "PolicyName": "RHCognitoSignUp"
+          }
+        ]
+      }
+    },
+    "RHSignUpLambda": {
+      "Metadata": {
+        "Source": "https://github.com/respectful-heart/rh-cognito-sign-up.git"
+      },
+      "Type": "AWS::Lambda::Function",
+      "DependsOn": [
+        "RHLambdaCognitoSignUpRole"
+      ],
+      "Properties": {
+        "FunctionName": {
+          "Fn::Join": [ "-", [{ "Ref": "Environment" }, "rh-sign-up-lambda"] ]
+        },
+        "Role": {
+          "Fn::GetAtt": [ "RHLambdaCognitoSignUpRole", "Arn" ]
+        },
+        "Code": {
+          "S3Bucket": "rh-configuration-resources",
+          "S3Key": {
+            "Fn::Sub": "lambdas/rh-cognito-sign-up.${RHSignUpLambdaHash}.zip"
+          }
+        },
+        "Handler": "index.handler",
+        "MemorySize": 128,
+        "Runtime": "nodejs6.10",
+        "Timeout": 10,
+        "Environment": {
+          "Variables": {
+            "CLIENT_ID": { "Ref": "CognitoClientID" }
+          }
+        }
+      }
+    },
+    "RHStaticBucket": {
+      "Metadata": {
+        "Source": "https://github.com/respectful-heart/respectful-heart.git#wireframes"
+      },
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": {
+          "Fn::Join": [ "-", [ { "Ref": "Environment" }, "rh-static-content" ] ]
+        },
+        "AccessControl": "PublicRead",
+        "WebsiteConfiguration": {
+            "IndexDocument": "index.html",
+            "ErrorDocument": "error.html"
+        }
+      }
+    }
+  }
+}
