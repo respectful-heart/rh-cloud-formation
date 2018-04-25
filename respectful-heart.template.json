@@ -4,6 +4,11 @@
     "CognitoClientID": {
       "Type": "String",
       "Description": "Client ID for use with Cognito sign-ups"
+    },
+    "Environment": {
+      "Type": "String",
+      "Description": "Target deployment environment",
+      "Default": "dev"
     }
   },
   "Metadata": {
@@ -48,9 +53,6 @@
       }
     },
     "RHSignUpLambda": {
-      "Metadata": {
-        "Source": "https://github.com/respectful-heart/rh-cognito-sign-up.git"
-      },
       "Type": "AWS::Lambda::Function",
       "DependsOn": [
         "RHLambdaCognitoSignUpRole"
@@ -65,7 +67,7 @@
         "Code": {
           "S3Bucket": "rh-configuration-resources",
           "S3Key": {
-            "Fn::Sub": "lambdas/rh-cognito-sign-up.${RHSignUpLambdaHash}.zip"
+            "Fn::Sub": "lambdas/rh-cognito-sign-up.${Environment}.zip"
           }
         },
         "Handler": "index.handler",
@@ -80,9 +82,6 @@
       }
     },
     "RHStaticBucket": {
-      "Metadata": {
-        "Source": "https://github.com/respectful-heart/respectful-heart.git#wireframes"
-      },
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketName": {

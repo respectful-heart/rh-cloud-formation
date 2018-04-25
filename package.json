@@ -6,15 +6,4 @@
   "author": "Adam Fitzpatrick",
   "license": "MIT",
   "private": true,
-  "scripts": {
-    "deploy": "cloud-echelon"
-  },
-  "dependencies": {
-    "cloud-echelon": "https://github.com/adamfitzpatrick/cloud-echelon.git"
-  },
-  "echelon": {
-    "Environment": "prd",
-    "Templates": "./templates",
-    "CreateNewStack": true
-  }
 }
