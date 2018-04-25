@@ -1,5 +1,0 @@
-Error: Parameters: [CLIENT_ID] do not exist in the template
-    at new CloudFormationError (/Users/adam.fitzpatrick/play/cloud-echelon/src/exceptions/exceptions.js:78:19)
-    at handleChangeSetError (/Users/adam.fitzpatrick/play/cloud-echelon/src/aws/cloud-formation.js:184:9)
-    at createChangeSet.then.then.then.catch.err (/Users/adam.fitzpatrick/play/cloud-echelon/src/aws/cloud-formation.js:207:14)
-    at process._tickDomainCallback (internal/process/next_tick.js:129:7)

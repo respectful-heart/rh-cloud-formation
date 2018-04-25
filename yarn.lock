@@ -294,7 +294,7 @@ cliui@^4.0.0:
 
 "cloud-echelon@https://github.com/adamfitzpatrick/cloud-echelon.git":
   version "0.1.0"
-  resolved "https://github.com/adamfitzpatrick/cloud-echelon.git#68f48344ffc49edee590f3555b1aec4164a0e97b"
+  resolved "https://github.com/adamfitzpatrick/cloud-echelon.git#e96563f207086ee5905f17c3fc153d80e6a9b43d"
   dependencies:
     archiver "2.1.1"
     aws-sdk "^2.203.0"
@@ -308,7 +308,7 @@ cliui@^4.0.0:
     recursive-readdir "^2.2.2"
     simple-git "^1.92.0"
     standard "11.0.0"
-    task-status "file:../../Library/Caches/Yarn/v1/task-status"
+    task-status "https://github.com/adamfitzpatrick/task-status.git"
     terminal-kit "1.14.3"
     yargs "11.0.0"
 
@@ -1958,8 +1958,9 @@ tar-stream@^1.5.0:
     readable-stream "^2.0.0"
     xtend "^4.0.0"
 
-"task-status@file:../task-status":
+"task-status@https://github.com/adamfitzpatrick/task-status.git":
   version "0.1.0"
+  resolved "https://github.com/adamfitzpatrick/task-status.git#9d9627517f942f79eea51ec49353c4a14e1b519e"
   dependencies:
     node-emoji "^1.8.1"
     terminal-kit "^1.15.0"
