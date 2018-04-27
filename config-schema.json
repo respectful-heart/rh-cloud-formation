@@ -1,0 +1,17 @@
+{
+  "title": "Configuration JSON for rh-cloud-formation",
+  "type": "object",
+  "properties": {
+    "Parameters": {
+      "type": "object",
+      "properties": {
+        "Environment": {
+          "type": "string"
+        },
+        "CognitoClientID": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

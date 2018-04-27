@@ -1,0 +1,38 @@
+Type: AWS::IAM::Role
+Properties:
+  RoleName: RHCodeBuildServiceRole
+  AssumeRolePolicyDocument:
+    Version: '2012-10-17'
+    Statement:
+      Effect: Allow
+      Principal:
+        Service:
+        - codebuild.amazonaws.com
+      Action:
+      - sts:AssumeRole
+  Policies:
+  - PolicyDocument:
+      Version: '2012-10-17'
+      Statement:
+      - Action:
+        - logs:CreateLogStream
+        - logs:CreateLogGroup
+        - logs:PutLogEvents
+        Resource: "*"
+        Effect: Allow
+      - Action:
+        - codebuild:StartBuild
+        - codebuild:UpdateProject
+        Resource: "*"
+        Effect: Allow
+      - Action:
+        - codecommit:GetBranch
+        - codecommit:GetCommit
+        Resource: "*"
+        Effect: Allow
+      - Action:
+        - s3:GetObject
+        - s3:PutObject
+        Resource: "*"
+        Effect: Allow
+    PolicyName: RHCodeBuildServicePolicy

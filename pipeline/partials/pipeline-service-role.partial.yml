@@ -1,0 +1,59 @@
+Type: AWS::IAM::Role
+Properties:
+  RoleName: RHPipelineServiceRole
+  AssumeRolePolicyDocument:
+    Version: '2012-10-17'
+    Statement:
+      Effect: Allow
+      Principal:
+        Service:
+        - codepipeline.amazonaws.com
+      Action:
+      - sts:AssumeRole
+  Policies:
+  - PolicyDocument:
+      Version: '2012-10-17'
+      Statement:
+      - Action:
+        - s3:GetObject
+        - s3:GetObjectVersion
+        - s3:GetBucketVersioning
+        - s3:PutObject
+        Resource: "*"
+        Effect: Allow
+      - Action:
+        - iam:PassRole
+        Resource: "*"
+        Effect: Allow
+      - Action:
+        - lambda:InvokeFunction
+        - lambda:ListFunctions
+        Resource: "*"
+        Effect: Allow
+      - Action:
+        - cloudformation:CreateStack
+        - cloudformation:DeleteStack
+        - cloudformation:DescribeStacks
+        - cloudformation:UpdateStack
+        - cloudformation:CreateChangeSet
+        - cloudformation:DeleteChangeSet
+        - cloudformation:DescribeChangeSet
+        - cloudformation:ExecuteChangeSet
+        - cloudformation:SetStackPolicy
+        - cloudformation:ValidateTemplate
+        Resource: "*"
+        Effect: Allow
+      - Action:
+        - codecommit:GetBranch
+        - codecommit:GetCommit
+        - codecommit:UploadArchive
+        - codecommit:GetUploadArchiveStatus
+        - codecommit:CancelUploadArchive
+        Resource: "*"
+        Effect: Allow
+      - Action:
+        - codebuild:StartBuild
+        - codebuild:BatchGetBuilds
+        Resource: "*"
+        Effect: Allow
+    PolicyName: RHPipelinePolicy

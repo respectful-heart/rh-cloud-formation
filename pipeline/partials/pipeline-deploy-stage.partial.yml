@@ -1,0 +1,35 @@
+Name: DeployDev
+Actions:
+- Name: CognitoSignUpAppBuild
+  RunOrder: 1
+  ActionTypeId:
+    Category: Build
+    Owner: AWS
+    Version: '1'
+    Provider: CodeBuild
+  InputArtifacts:
+  - Name: RHSignUpLambdaSource
+  OutputArtifacts:
+  - Name: RHSignUpLambda
+  Configuration:
+    ProjectName:
+      Ref: CognitoSignUpBuild
+- Name: CloudFormationDeployAction
+  RunOrder: 2
+  ActionTypeId:
+    Category: Deploy
+    Owner: AWS
+    Version: 1
+    Provider: CloudFormation
+  InputArtifacts:
+  - Name: RHCloudFormation
+  - Name: RHConfig
+  - Name: RHSignUpLambda
+  Configuration:
+    ActionMode: REPLACE_ON_FAILURE
+    RoleArn:
+      Fn::GetAtt: CloudFormationDeploymentRole.Arn
+    StackName: devRHStack
+    TemplatePath: RHCloudFormation::respectful-heart.template.json
+    TemplateConfiguration: RHConfig::dev-config.json
+    Capabilities: CAPABILITY_NAMED_IAM

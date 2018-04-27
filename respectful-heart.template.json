@@ -66,9 +66,7 @@
         },
         "Code": {
           "S3Bucket": "rh-configuration-resources",
-          "S3Key": {
-            "Fn::Sub": "lambdas/rh-cognito-sign-up.${Environment}.zip"
-          }
+          "S3Key": "lambdas/rh-cognito-sign-up.zip"
         },
         "Handler": "index.handler",
         "MemorySize": 128,

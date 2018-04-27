@@ -1,0 +1,65 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Mappings:
+  BranchMap:
+    dev:
+      branch: develop
+    int:
+      branch: master
+    prd:
+      branch: master
+Parameters:
+  Environment:
+    Type: String
+    Description: Specifies environment for the pipeline
+    Default: dev
+  GitHubOauthToken:
+    Type: String
+    Description: Token required for sourcing from GitHub
+    NoEcho: true
+Resources:
+  BuildServiceRole:
+    Fn::Transform:
+      Name: AWS::Include
+      Parameters:
+        Location: s3://rh-configuration-resources/pipeline/partials/build-service-role.partial.yml
+  CognitoSignUpBuild:
+    Fn::Transform:
+      Name: AWS::Include
+      Parameters:
+        Location: s3://rh-configuration-resources/pipeline/partials/cognito-sign-up-build.partial.yml
+  PipelineArtifactStore:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: rh-pipeline-artifact-store
+      VersioningConfiguration:
+        Status: Enabled
+  PipelineServiceRole:
+    Fn::Transform:
+      Name: AWS::Include
+      Parameters:
+        Location: s3://rh-configuration-resources/pipeline/partials/pipeline-service-role.partial.yml
+  Pipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      Name: RHPipeline
+      RoleArn:
+        Fn::GetAtt: [PipelineServiceRole, Arn]
+      Stages:
+      - Fn::Transform:
+          Name: AWS::Include
+          Parameters:
+            Location: s3://rh-configuration-resources/pipeline/partials/pipeline-source-stage.partial.yml
+      - Fn::Transform:
+          Name: AWS::Include
+          Parameters:
+            Location: s3://rh-configuration-resources/pipeline/partials/pipeline-deploy-stage.partial.yml
+      ArtifactStore:
+        Type: S3
+        Location:
+          Ref: PipelineArtifactStore
+  CloudFormationDeploymentRole:
+    Fn::Transform:
+      Name: AWS::Include
+      Parameters:
+        Location: s3://rh-configuration-resources/pipeline/partials/cloudformation-deployment-role.partial.yml

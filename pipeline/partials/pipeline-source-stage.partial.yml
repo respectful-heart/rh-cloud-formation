@@ -1,0 +1,46 @@
+Name: Source
+Actions:
+- Name: CloudFormationTemplate
+  RunOrder: 1
+  ActionTypeId:
+    Category: Source
+    Owner: ThirdParty
+    Version: '1'
+    Provider: GitHub
+  OutputArtifacts:
+  - Name: RHCloudFormation
+  Configuration:
+    Owner: respectful-heart
+    Repo: rh-cloud-formation
+    Branch: codepipeline-test
+    OAuthToken:
+      Ref: GitHubOauthToken
+- Name: AppConfig
+  RunOrder: 1
+  ActionTypeId:
+    Category: Source
+    Owner: AWS
+    Version: '1'
+    Provider: S3
+  OutputArtifacts:
+  - Name: RHConfig
+  Configuration:
+    S3Bucket: 'rh-configuration-resources'
+    PollForSourceChanges: true
+    S3ObjectKey: 'config.zip'
+- Name: CognitoSignUpAppSource
+  RunOrder: 1
+  ActionTypeId:
+    Category: Source
+    Owner: AWS
+    Version: '1'
+    Provider: CodeCommit
+  OutputArtifacts:
+  - Name: RHSignUpLambdaSource
+  Configuration:
+    RepositoryName: rh-cognito-sign-up
+    BranchName:
+      Fn::FindInMap:
+      - BranchMap
+      - Ref: Environment
+      - branch

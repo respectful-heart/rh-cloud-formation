@@ -1,0 +1,50 @@
+Type: AWS::IAM::Role
+Properties:
+  RoleName: RHCloudFormationDeploymentRole
+  AssumeRolePolicyDocument:
+    Version: '2012-10-17'
+    Statement:
+      Effect: Allow
+      Principal:
+        Service:
+        - cloudformation.amazonaws.com
+      Action:
+      - sts:AssumeRole
+  Policies:
+  - PolicyDocument:
+      Version: '2012-10-17'
+      Statement:
+      - Action:
+        - lambda:UpdateFunctionCode
+        Resource: "*"
+        Effect: Allow
+      - Action:
+        - s3:CreateBucket
+        - s3:GetObject
+        - s3:PutBucketVersioning
+        - s3:PutBucketWebsite
+        - s3:PutBucketAcl
+        Resource: "*"
+        Effect: Allow
+      - Action:
+        - iam:GetRole
+        - iam:PassRole
+        - iam:CreateRole
+        - iam:CreatePolicy
+        - iam:AttachRolePolicy
+        Resource: "*"
+        Effect: Allow
+      - Action:
+        - cloudformation:CreateStack
+        - cloudformation:DeleteStack
+        - cloudformation:DescribeStacks
+        - cloudformation:UpdateStack
+        - cloudformation:CreateChangeSet
+        - cloudformation:DeleteChangeSet
+        - cloudformation:DescribeChangeSet
+        - cloudformation:ExecuteChangeSet
+        - cloudformation:SetStackPolicy
+        - cloudformation:ValidateTemplate
+        Resource: "*"
+        Effect: Allow
+    PolicyName: RHCloudFormationPolicy

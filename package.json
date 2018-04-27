@@ -6,4 +6,11 @@
   "author": "Adam Fitzpatrick",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "pipeline": "codepipeline-starter respectful-heart-test"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.229.1",
+    "codepipeline-starter": "https://github.com/adamfitzpatrick/codepipeline-starter.git"
+  }
 }
